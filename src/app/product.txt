@@ -1,0 +1,104 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Product } from './product';
+import { ProductService } from './product.service';
+
+/**
+ * Add a constructor that also defines a private property.
+Add to the component's providers metadata.
+Add the constructor:
+ */
+
+/** 
+ * Defining mock Products.
+ * Eventually this app will fetch the list of products from a web service, for now we can display mock propducts.
+ * PRODUCT is the type Product, previusly defined.
+ */
+
+
+/* const PRODUCT: Product[] = [
+    { id: 1, title: 'Lipstick', description: 'Rouge Brillant Lipstick'},
+    { id: 2, title: 'Eyeshadow', description: '4 Colour eyeshadow palette'},
+    { id: 3, title: 'Mascara', description: 'Super Volume Mask'},
+    { id: 4, title: 'Make-up Remover', description: 'Instant eye make-up remover'},
+  ] */
+/**
+ * When the expression (hero === selectedHero) is true, 
+ * Angular adds the selected CSS class.
+ */
+
+ //product-detail: That's the tag name of the element that represents the ProductDetailComponent.
+ //binding the selectedProduct property of the AppComponent to the product property of the ProductDetailComponent.
+ //Se envia en [product] el "selectedProduct" hacia el componente identificado dentro del tag product-detail.
+ //When the expression (hero === selectedHero) is true, Angular adds the selected CSS class.
+@Component({
+  selector: 'my-product',
+  template: './product.component.html',
+  //The styleUrls property is an array of style file names (with paths). You could list multiple style files from different locations if you needed them.
+  styles: [ './product.component.css' ]
+/*   providers: [ //The providers array tells Angular to create a fresh instance of the ProductService
+    ProductService
+  ] */
+})
+
+/**
+ * The products type isn't defined because TypeScript infers it from the PRODUCT array.
+ */
+export class ProductComponent implements OnInit { 
+/*  product: Product = {
+    id: 1,    title: 'Table',
+    description: '32cmx48cm'
+  }; */
+  //UPDATE: Now, we can use the mock-product.ts and add an uninitialized products property
+  products: Product[]; //public property in AppComponent that exposes the propducts for binding.
+  selectedProduct: Product;
+
+  //constructor is for simple initializations
+  constructor(
+    //Inyeccion del router en el constructir
+    private router: Router,
+    private productService: ProductService) { }
+
+    //**Synchronous way: users have to wait for the server to respond --> block the UI during the wait.
+    //getProducts(): void { 
+    //this.products = this.productService.getProduct();
+    //}
+    //Promises:an asynchronous technique that changes the signature of the getProducts() method.
+    //**Asynchronous way
+
+  getProducts(): void {
+    //The callback sets the component's products property to the products of products returned by the service.
+    this.productService.getProducts().then(products => this.products = products);
+  }
+
+  //the OnInit interface has a hook method ngOnInit method with the initialization logic inside. initialize by calling getProducts().
+  ngOnInit(): void {
+    this.getProducts();
+  }
+
+  onSelect(product: Product): void {
+    this.selectedProduct = product;
+  }
+
+  gotoDetail(): void {
+    this.router.navigate(['/detail', this.selectedProduct.id]);
+  } 
+}
+
+/**
+ * DOC:
+ * Promise: Promises to call back when the results are ready. 
+ * You ask an asynchronous service to do some work and give it 
+ * a callback function. The service does that work and 
+ * eventually calls the function with the results or an error.
+ */
+
+/**
+ * two-way data binding: ==> This binding both displays the product's description and allows users to change it.<input> [(ngModel)]= product.description placeholder="description"
+ * [(ngModel)] is the Angular syntax to bind the product.description property to the textbox. 
+ * Data flows in both directions: from the property to the textbox, and from the textbox 
+ * back to the property.
+ */ 
+
+ 

@@ -1,0 +1,48 @@
+/**
+ * This file will hold the new ProductDetailComponent
+ */
+//Import the switchMap operator to use later with the route parameters Observable.
+import 'rxjs/add/operator/switchMap';
+//1. To define a component, you always import the Component symbol.
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Location }                 from '@angular/common';
+
+import { Product } from './product';
+import { ProductService } from './product.service';
+
+//2.The @Component decorator provides the Angular metadata for the component. 
+//The CSS selector name, product-detail, will match the element tag that identifies this component within a parent component's 
+//template. Then, you'll add a <product-detail> element to the AppComponent template.
+@Component({
+  selector: 'product-detail',
+  template: './product-detail.component.html'
+})
+
+//3. Always export the component class because you'll always import it elsewhere.
+export class ProductDetailComponent {
+    //All it does is receive a Product object through its product input property and then bind 
+    //to that property with its template.
+    //@Input() product: Product;
+    product: Product;
+    //4.Inject the ActivatedRoute, ProductService, and Location services into the constructor
+    constructor(
+      private productService: ProductService,
+      private route: ActivatedRoute,
+      private location: Location
+    ) {}
+
+    ngOnInit(): void {
+      this.route.paramMap // paramMap = observable
+        .switchMap((params: ParamMap) => this.productService.getProduct(+params.get('id'))) //extract the id parameter The hero id is a number. Route parameters are always strings. So the route parameter value is converted to a number with the JavaScript (+) operator.
+        //use the ProductService to fetch the hero with that id.
+        .subscribe(product => this.product = product);
+    }
+    goBack(): void {
+      this.location.back();
+    }
+}
+
+
+
+
