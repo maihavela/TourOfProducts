@@ -1,5 +1,4 @@
-import { Product } from './product';
-
+import { Product } from "../product/product";
 //The PRODUCT constant is exported so it can be imported elsewhere, such as the ProductService.
 //Returned type = Product[].
 export const PRODUCT: Product[] = [

@@ -2,9 +2,8 @@ import 'rxjs/add/operator/switchMap';
 import { Component, OnInit }        from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location }                 from '@angular/common';
-
-import { Product } from './product';
-import { ProductService } from './product.service';
+import { Product } from "../product/product";
+import { ProductService } from "../product/product.service";
 
 @Component({
   selector: 'product-detail',
